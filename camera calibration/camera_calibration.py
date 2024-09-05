@@ -3,6 +3,14 @@ import numpy as np
 import os
 import glob
 
+def removeDistortion(fileName, camMatrix, distCoeff):
+    image = cv2.imread(fileName)
+    height, width = image.shape[:2]
+    new_camMatrix, roi = cv2.getOptimalNewCameraMatrix(camMatrix, distCoeff, (width, height), 1, (width, height)) # i have no idea what roi is
+    image_undistorted = cv2.undistort(image, camMatrix, distCoeff, None, new_camMatrix)
+    new_fileName = fileName[:-3] + '_undistorted.png'
+    cv2.imwrite(new_fileName, image_undistorted)
+
 # defining the number of rows and columns of INNER squares of checkerboard
 checkerBoard = (6, 9)
 
@@ -21,7 +29,7 @@ obj_pts[0, :, :2] = np.mgrid[0:checkerBoard[0], 0:checkerBoard[1]].T.reshape(-1,
 
 prev_image_shape = None
 
-images = glob.glob('png_images/*.jpeg')
+images = glob.glob('png_images/*.png')
 for fileName in images:
     image = cv2.imread(fileName)
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -38,18 +46,26 @@ for fileName in images:
         image = cv2.drawChessboardCorners(image, checkerBoard, refined_corners, result)
         cv2.imshow('img',image)
         cv2.waitKey(500)
+        new_fileName = 'drawn_corner_images' + fileName[10:]
+        cv2.imwrite(new_fileName, image)
         cv2.destroyAllWindows()
 
     else:
         print(f'Insufficient corners found for {fileName}!')
-        cv2.waitKey(500)
 
-result, intrinsic_parameters, distortion_coefficients, rotation_vectors, translation_vectors = cv2.calibrateCamera(all_obj_pts, all_img_pts, gray_image.shape[::-1], None, None)
+reprojection_error, camera_matrix, distortion_coefficients, rotation_vectors, translation_vectors = cv2.calibrateCamera(all_obj_pts, all_img_pts, gray_image.shape[::-1], None, None)
 
-print('----- Camera matrix -----')
-print('Intrinsic parameters:')
-print(intrinsic_parameters)
 print()
+print('----- Calibration parameters -----')
+print()
+print('Reprojection error:')
+print(f'{reprojection_error:.5f}')
+print()
+# intrinsic parameters
+print('Camera matrix:')
+print(camera_matrix)
+print()
+#extrinsic parameters
 print('Distortion coefficients:')
 print(distortion_coefficients)
 print()
@@ -58,3 +74,5 @@ print(rotation_vectors)
 print()
 print('Translation vectors:')
 print(translation_vectors)
+
+removeDistortion('IMG_1296.png', camera_matrix, distortion_coefficients)
