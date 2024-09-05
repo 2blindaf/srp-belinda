@@ -21,7 +21,7 @@ obj_pts[0, :, :2] = np.mgrid[0:checkerBoard[0], 0:checkerBoard[1]].T.reshape(-1,
 
 prev_image_shape = None
 
-images = glob.glob('./images/*.jpg')
+images = glob.glob('png_images/*.jpeg')
 for fileName in images:
     image = cv2.imread(fileName)
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -31,7 +31,7 @@ for fileName in images:
 
     if result == True:
         all_obj_pts.append(obj_pts)
-        refined_corners = cv2.cornerSubPix(gray_image, (11,11), (-1,-1), criteria)
+        refined_corners = cv2.cornerSubPix(gray_image, corners, (11,11), (-1,-1), criteria)
         all_img_pts.append(refined_corners)
         
         #draw and display
@@ -41,7 +41,7 @@ for fileName in images:
         cv2.destroyAllWindows()
 
     else:
-        print(f'Insufficient corners found for {fileName}.jpg!')
+        print(f'Insufficient corners found for {fileName}!')
         cv2.waitKey(500)
 
 result, intrinsic_parameters, distortion_coefficients, rotation_vectors, translation_vectors = cv2.calibrateCamera(all_obj_pts, all_img_pts, gray_image.shape[::-1], None, None)
