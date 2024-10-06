@@ -4,6 +4,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from skimage import io
 import collections
 
+# This detector utilises Facial Alignment Network (FAN) which is associated to be less stable than mediapipe
 
 # Optionally set detector and some additional detector parameters
 face_detector = 'sfd'
