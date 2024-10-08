@@ -1,0 +1,11 @@
+conda create --name faceNext python=3.8
+conda activate faceNext
+conda install pytorch==1.5.1 torchvision==0.6.1 cudatoolkit=10.1 -c pytorch
+pip install redner-gpu
+conda install -c conda-forge opencv
+conda install -c 1adrianb face_alignment=1.2.0
+conda install -c anaconda h5py
+conda install -c conda-forge matplotlib=3.3.4
+pip install mediapipe
+
+rationale: mediapipe only supports python version 3.8 to 3.10
