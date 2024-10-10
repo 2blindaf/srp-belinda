@@ -1,0 +1,8 @@
+terminal:
+python optimizer.py --input /input/s1.png --output /output/
+conda run -n faceNext python optimizer.py
+
+edits to outdated code:
+morphablemodel.py line 150
+morphablemodel.py line 151
+projection.py line 12
