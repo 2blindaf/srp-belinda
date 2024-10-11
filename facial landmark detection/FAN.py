@@ -4,22 +4,22 @@ from mpl_toolkits.mplot3d import Axes3D
 from skimage import io
 import collections
 
-# This detector utilises Facial Alignment Network (FAN) which has been recognised to be less stable than mediapipe
+# this detector utilises Facial Alignment Network (FAN) which has been recognised to be less stable than mediapipe
 
-# Optionally set detector and some additional detector parameters
+# set detector and detector parameters
 face_detector = 'sfd'
 face_detector_kwargs = {
     "filter_threshold" : 0.8
 }
 
-# Run the 3D face alignment on a test image, without CUDA.
-fa = face_alignment.FaceAlignment(face_alignment.LandmarksType.THREE_D, flip_input=True,
+# run 3D face alignment on an image
+fa = face_alignment.FaceAlignment(face_alignment.LandmarksType.THREE_D, device='cuda', flip_input=True,
                                   face_detector=face_detector, face_detector_kwargs=face_detector_kwargs)
 
-input_img = io.imread('./original/s1.png')
+input_img = io.imread('./original/m3.jpg')
 preds = fa.get_landmarks(input_img)[-1]
 
-# 2D-Plot
+# 2D-plot
 plot_style = dict(marker='o',
                   markersize=4,
                   linestyle='-',
@@ -48,7 +48,7 @@ for pred_type in pred_types.values():
 
 ax.axis('off')
 
-# 3D-Plot
+# 3D-plot
 ax = fig.add_subplot(1, 2, 2, projection='3d')
 surf = ax.scatter(preds[:, 0] * 1.2,
                   preds[:, 1],
@@ -62,6 +62,7 @@ for pred_type in pred_types.values():
               preds[pred_type.slice, 1],
               preds[pred_type.slice, 2], color='blue')
 
-ax.view_init(elev=90., azim=90.)
+# rotate axes, elev is the elevation angle in the z plane and azim is the azimuth angle in the x,y plane
+ax.view_init(elev=90, azim=90) # 90,90 is default
 ax.set_xlim(ax.get_xlim()[::-1])
 plt.show()
