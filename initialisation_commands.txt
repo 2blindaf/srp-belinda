@@ -4,7 +4,18 @@ python optimizer.py --input ./input/s1.png --output ./output/
 [PREFERRED FOR DEBUGGING]
 conda run python optimizer.py --input ./input/m1.jpg --output ./output/
 
+conda run python optimizer.py --input ./input/s1.png --output ./output/ --checkpoint ./output/s1.png/checkpoints/stage1_output.pickle
+
 edits to outdated code:
 morphablemodel.py line 150
 morphablemodel.py line 151
 projection.py line 12
+
+error:
+2/3 => Optimizing shape, statistical albedos, expression, head pose and scene light...
+
+0%|          | 0/401 [00:00<?, ?it/s]Assertion failed: false, file C:\Users\Administrator\AppData\Local\Temp\2\pip-req-build-l6z45pd9\src\scene.cpp, line 125
+
+ERROR conda.cli.main_run:execute(125): `conda run python optimizer.py --input ./input/s1.png --output ./output/` failed. (See above for error)
+
+error likely to occur in optimizer.py line 223 to 261
