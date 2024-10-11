@@ -4,7 +4,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from skimage import io
 import collections
 
-# This detector utilises Facial Alignment Network (FAN) which is associated to be less stable than mediapipe
+# This detector utilises Facial Alignment Network (FAN) which has been recognised to be less stable than mediapipe
 
 # Optionally set detector and some additional detector parameters
 face_detector = 'sfd'
@@ -16,7 +16,7 @@ face_detector_kwargs = {
 fa = face_alignment.FaceAlignment(face_alignment.LandmarksType.THREE_D, flip_input=True,
                                   face_detector=face_detector, face_detector_kwargs=face_detector_kwargs)
 
-input_img = io.imread('3.jpg')
+input_img = io.imread('./original/s1.png')
 preds = fa.get_landmarks(input_img)[-1]
 
 # 2D-Plot
