@@ -1,3 +1,5 @@
+----- faceNext -----
+
 conda create --name faceNext python=3.8
 conda activate faceNext
 conda install pytorch==1.5.1 torchvision==0.6.1 cudatoolkit=10.1 -c pytorch
@@ -9,3 +11,47 @@ conda install -c conda-forge matplotlib=3.3.4
 pip install mediapipe
 
 rationale: mediapipe only supports python version 3.8 to 3.10
+
+----- DECA -----
+
+conda install python=3.8
+pip install setuptools==64.0.3	#setuptools<65
+pip install numpy==1.18.5
+pip install matplotlib==3.5.3
+pip install torch==1.8.0+cu111 torchvision==0.9.0+cu111 torchaudio==0.8.0 -f https://download.pytorch.org/whl/torch_stable.html
+pip install ninja==1.10.2
+python demos/demo_reconstruct.py -i TestSamples/examples/IMG_0392_inputs.jpg --saveDepth True --saveObj True
+
+rationale: torch only supports python>=3.8
+https://numpy.org/doc/stable/reference/distutils_status_migration.html#numpy-setuptools-interaction
+https://discourse.pymc.io/t/fresh-install-error-no-module-named-distutils-msvccompiler/10165
+https://matplotlib.org/devdocs/devel/min_dep_policy.html
+https://numba.readthedocs.io/en/stable/user/installing.html#version-support-information
+https://discuss.pytorch.org/t/would-pytorch-for-cuda-11-6-work-when-cuda-is-actually-12-0/169569
+
+add Microsoft Visual Studio to PATH:
+http://github.tbz.io/Blog/17/04/CL_CL_VS17.html
+https://github.com/HRNet/HRNet-Semantic-Segmentation/issues/39 
+
+----- file changes -----
+
+decalib/dataset/detectors.py, line 22
+self.model = face_alignment.FaceAlignment(face_alignment.LandmarksType.TWO_D, flip_input=False)
+OR
+pip install face_alignment==1.3.4
+
+decalib/dataset/renderer.py, line 41
+extra_cuda_cflags = ['-std=c++22', '-ccbin=$$(which gcc-11)'])	# change c++ version and gcc version
+https://stackoverflow.com/questions/6622454/cuda-incompatible-with-my-gcc-version
+https://phoenixnap.com/kb/install-gcc-windows
+
+miniconda3/envs/DECA/lib/python3.8/site-packages/torch/utils/cpp_extension.py
+ninja, -v --> ninja, --version
+
+----- BFM_to_FLAME -----
+
+conda install python=3.9
+pip install numpy==1.19.4
+pip install h5py==3.1.0
+pip install chumpy==0.70 
+pip install opencv-python==4.4.0.46
