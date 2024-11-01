@@ -33,6 +33,10 @@ add Microsoft Visual Studio to PATH:
 http://github.tbz.io/Blog/17/04/CL_CL_VS17.html
 https://github.com/HRNet/HRNet-Semantic-Segmentation/issues/39 
 
+add cl to PATH
+add gcc to PATH
+add ninja to PATH
+
 ----- file changes -----
 
 decalib/dataset/detectors.py, line 22
